@@ -38,7 +38,16 @@ def train_and_evaluate(models, X_train, y_train, X_test, y_test):
 
     return model_scores
 
-def cross_validate(models, X, y):
+def model_cv(models, X, y):
+    """
+
+    Performs 5 fold cross validation on the given models.
+    X: features
+    y: target variable
+
+    """
+
+    #Shuffle makes folds random
     cv = KFold(n_splits=5, shuffle=True, random_state=42)
     scoring = ["neg_mean_squared_error", "neg_mean_absolute_error", "r2"]
 
