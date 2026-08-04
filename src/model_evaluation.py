@@ -1,4 +1,5 @@
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn.model_selection import KFold, cross_validate
 import pandas as pd
 
 #Return the evaluation of the models without cross-validation
@@ -36,3 +37,20 @@ def train_and_evaluate(models, X_train, y_train, X_test, y_test):
         model_scores[name] = scores
 
     return model_scores
+
+def cross_validate(models, X, y):
+    cv = KFold(n_splits=5, shuffle=True, random_state=42)
+    scoring = ["neg_mean_squared_error", "neg_mean_absolute_error", "r2"]
+
+    cv_results = {}
+    for name, model in models.items():
+        scores = cross_validate(model, X, y, cv=cv, scoring=scoring)
+        cv_results[name] = {
+            "MSE": -scores["test_neg_mean_squared_error"].mean(),
+            "MSE_std": scores["test_neg_mean_squared_error"].std(),
+            "MAE": -scores["test_neg_mean_absolute_error"].mean(),
+            "R2": scores["test_r2"].mean(),
+            "R2_std": scores["test_r2"].std()
+        }
+
+    return cv_results
