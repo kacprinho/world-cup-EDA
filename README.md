@@ -11,6 +11,7 @@ Given multiple other statistics, predict the number of goals a player scores.
 Kaggle dataset — https://www.kaggle.com/datasets/swaptr/fifa-wc-2026-players
 
 ## Project Structure
+```
 ├── data/
 │   └── players.csv              # original, unmodified source data
 ├── notebooks/
@@ -21,7 +22,7 @@ Kaggle dataset — https://www.kaggle.com/datasets/swaptr/fifa-wc-2026-players
 ├── .gitignore
 ├── requirements.txt
 └── README.md
-
+```
 
 ## Results
 Final results can be found in the last bar chart at the end of the second player-ML notebook.
