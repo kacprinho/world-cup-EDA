@@ -1,7 +1,7 @@
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn.model_selection import KFold, cross_validate, GridSearchCV
 import pandas as pd
 
-#Return the evaluation of the models without cross-validation
 def train_and_evaluate(models, X_train, y_train, X_test, y_test):
     """
     Fits and evaluates given ML models.
@@ -36,3 +36,47 @@ def train_and_evaluate(models, X_train, y_train, X_test, y_test):
         model_scores[name] = scores
 
     return model_scores
+
+def model_cv(models, X, y):
+    """
+
+    Performs 5 fold cross validation on the given models.
+    X: features
+    y: target variable
+
+    """
+
+    #Shuffle makes folds random
+    cv = KFold(n_splits=5, shuffle=True, random_state=13)
+    scoring = ["neg_mean_squared_error", "neg_mean_absolute_error", "r2"]
+
+    cv_results = {}
+    for name, model in models.items():
+        scores = cross_validate(model, X, y, cv=cv, scoring=scoring)
+        cv_results[name] = {
+            "MSE": -scores["test_neg_mean_squared_error"].mean(),
+            "MSE_std": scores["test_neg_mean_squared_error"].std(),
+            "MAE": -scores["test_neg_mean_absolute_error"].mean(),
+            "R2": scores["test_r2"].mean(),
+            "R2_std": scores["test_r2"].std()
+        }
+
+    return cv_results
+
+def hyperparameter_tuning(model, model_params, X, y):
+    """
+
+    Performs hyperparameter tuning based on the same CV.
+    GridSearchCV exhuasts each parameter combination, which is suitable since we don't have many parameters.
+    
+    model_params: parameters to be tuned for
+    
+    """
+
+    cv = KFold(n_splits=5, shuffle=True, random_state=13)
+
+    grid = GridSearchCV(model, model_params, cv=cv, scoring="neg_mean_squared_error", n_jobs=-1)
+    grid.fit(X, y)
+
+    print("Best params:", grid.best_params_)
+    print("Best MSE:", -grid.best_score_)
