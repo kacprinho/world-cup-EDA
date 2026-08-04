@@ -35,9 +35,9 @@ random_state=13 is used consistently across all models and splits for reproducib
 Python 3.13 · pandas · NumPy · scikit-learn · matplotlib · seaborn · Jupyter
 
 ## Git Workflow
-main contains stable, working notebooks/code only
-Feature branches (data-collection, ML-model, etc.) for in-progress work, merged into main via pull request once complete
-Commit messages follow a short imperative style
+- main contains stable, working notebooks/code only
+- Feature branches (data-collection, ML-model, etc.) for in-progress work, merged into main via pull request once complete
+- Commit messages follow a short imperative style
 
 ## Author
 Kacper Kawecki — Discrete Mathematics student, University of Warwick
